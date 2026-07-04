@@ -1,0 +1,17 @@
+# Virtual Environment
+venv/
+ENV/
+env/
+.venv/
+
+# Python Cache
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Models and Pickles (Optional, but let's keep them if user wants us to push everything, but usually .pkls are fine for small demos. The user says: "Save the highest-performing trained model and the scaler artifact using joblib or pickle so the frontend can load them seamlessly." and "secondly you have to push and commit changes to my repositry as well every time you add or change something repositry is already linked")
+# Let's not ignore .pkl files since they are small and the frontend needs them to run in their repository if cloned.
+
+# Operating System Files
+.DS_Store
+Thumbs.db

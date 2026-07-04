@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CardioPulse | Heart Disease Prediction System</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome for modern icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Custom Style Sheet -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="glow-bg-1"></div>
+    <div class="glow-bg-2"></div>
+
+    <div class="container">
+        <!-- Header -->
+        <header class="app-header">
+            <div class="logo">
+                <div class="heart-pulse-icon">
+                    <i class="fa-solid fa-heart-pulse"></i>
+                </div>
+                <h1>Cardio<span>Pulse</span></h1>
+            </div>
+            <p class="subtitle">Advanced Cardiovascular Risk Assessment & Machine Learning Diagnostics</p>
+        </header>
+
+        <!-- Main Dashboard Content -->
+        <main class="dashboard-grid">
+            
+            <!-- Left Panel: Input Features Form -->
+            <section class="form-panel glass-card">
+                <h2 class="panel-title"><i class="fa-solid fa-clipboard-user"></i> Patient Parameters</h2>
+                <form id="prediction-form" class="prediction-form">
+                    
+                    <!-- Form Row 1: Age & Sex -->
+                    <div class="form-row split-row">
+                        <!-- Age Slider -->
+                        <div class="form-group slider-group">
+                            <label for="age">
+                                <span>Age (years)</span>
+                                <span class="slider-val" id="age-val">45</span>
+                            </label>
+                            <div class="slider-wrapper">
+                                <span class="slider-min">29</span>
+                                <input type="range" id="age" name="age" min="29" max="80" value="45" class="custom-slider">
+                                <span class="slider-max">80</span>
+                            </div>
+                        </div>
+
+                        <!-- Sex Buttons -->
+                        <div class="form-group">
+                            <label>Biological Sex</label>
+                            <div class="toggle-group" id="sex-group">
+                                <button type="button" class="btn-toggle active" data-val="1">
+                                    <i class="fa-solid fa-mars"></i> Male
+                                </button>
+                                <button type="button" class="btn-toggle" data-val="0">
+                                    <i class="fa-solid fa-venus"></i> Female
+                                </button>
+                                <input type="hidden" id="sex" name="sex" value="1">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Form Row 2: Chest Pain Type -->
+                    <div class="form-group">
+                        <label>Chest Pain Type (cp)</label>
+                        <div class="card-selector-grid" id="cp-group">
+                            <div class="selector-card active" data-val="0">
+                                <div class="card-icon"><i class="fa-solid fa-shield-halved"></i></div>
+                                <div class="card-title">Typical Angina</div>
+                                <div class="card-desc">Standard cardiac-related chest pain</div>
+                            </div>
+                            <div class="selector-card" data-val="1">
+                                <div class="card-icon"><i class="fa-solid fa-burst"></i></div>
+                                <div class="card-title">Atypical Angina</div>
+                                <div class="card-desc">Chest discomfort unrelated to heart</div>
+                            </div>
+                            <div class="selector-card" data-val="2">
+                                <div class="card-icon"><i class="fa-solid fa-heart-crack"></i></div>
+                                <div class="card-title">Non-anginal</div>
+                                <div class="card-desc">Sharp, brief or muscular pain</div>
+                            </div>
+                            <div class="selector-card" data-val="3">
+                                <div class="card-icon"><i class="fa-solid fa-face-smile"></i></div>
+                                <div class="card-title">Asymptomatic</div>
+                                <div class="card-desc">No pain but potential underlying risk</div>
+                            </div>
+                            <input type="hidden" id="cp" name="cp" value="0">
+                        </div>
+                    </div>
+
+                    <!-- Form Row 3: Resting Blood Pressure & Serum Cholesterol -->
+                    <div class="form-row split-row">
+                        <!-- Resting BP Slider -->
+                        <div class="form-group slider-group">
+                            <label for="trestbps">
+                                <span>Resting Blood Pressure (mm Hg)</span>
+                                <span class="slider-val" id="trestbps-val">120</span>
+                            </label>
+                            <div class="slider-wrapper">
+                                <span class="slider-min">90</span>
+                                <input type="range" id="trestbps" name="trestbps" min="90" max="200" value="120" class="custom-slider">
+                                <span class="slider-max">200</span>
+                            </div>
+                        </div>
+
+                        <!-- Cholesterol Slider -->
+                        <div class="form-group slider-group">
+                            <label for="chol">
+                                <span>Serum Cholesterol (mg/dl)</span>
+                                <span class="slider-val" id="chol-val">220</span>
+                            </label>
+                            <div class="slider-wrapper">
+                                <span class="slider-min">120</span>
+                                <input type="range" id="chol" name="chol" min="120" max="570" value="220" class="custom-slider">
+                                <span class="slider-max">570</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Form Row 4: Max Heart Rate Slider -->
+                    <div class="form-row split-row">
+                        <!-- Max Heart Rate Slider -->
+                        <div class="form-group slider-group" style="flex: 1.5;">
+                            <label for="thalach">
+                                <span>Max Heart Rate Achieved (thalach)</span>
+                                <span class="slider-val" id="thalach-val">150</span>
+                            </label>
+                            <div class="slider-wrapper">
+                                <span class="slider-min">70</span>
+                                <input type="range" id="thalach" name="thalach" min="70" max="210" value="150" class="custom-slider">
+                                <span class="slider-max">210</span>
+                            </div>
+                        </div>
+
+                        <!-- Fasting Blood Sugar Selector -->
+                        <div class="form-group">
+                            <label>Fasting Blood Sugar > 120 mg/dl</label>
+                            <div class="toggle-group" id="fbs-group">
+                                <button type="button" class="btn-toggle" data-val="1">Yes</button>
+                                <button type="button" class="btn-toggle active" data-val="0">No</button>
+                                <input type="hidden" id="fbs" name="fbs" value="0">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Form Row 5: Exercise Induced Angina Selector -->
+                    <div class="form-group">
+                        <label>Exercise Induced Angina (Chest pain during physical exertion)</label>
+                        <div class="toggle-group full-width" id="exang-group">
+                            <button type="button" class="btn-toggle" data-val="1">
+                                <i class="fa-solid fa-running"></i> Yes (Exertion causes chest pain)
+                            </button>
+                            <button type="button" class="btn-toggle active" data-val="0">
+                                <i class="fa-solid fa-chair"></i> No (Exertion does not cause pain)
+                            </button>
+                            <input type="hidden" id="exang" name="exang" value="0">
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn-primary" id="predict-btn">
+                        <span>Predict Risk Profile</span>
+                        <i class="fa-solid fa-heart-circle-bolt"></i>
+                    </button>
+                </form>
+            </section>
+
+            <!-- Right Panel: ML Diagnostics Output -->
+            <section class="results-panel glass-card">
+                <h2 class="panel-title"><i class="fa-solid fa-heart-pulse"></i> Diagnostic Report</h2>
+                
+                <!-- Initial State: Waiting for input -->
+                <div class="results-placeholder" id="placeholder-container">
+                    <div class="pulse-ring">
+                        <div class="ring-inner">
+                            <i class="fa-solid fa-heartbeat animate-pulse"></i>
+                        </div>
+                    </div>
+                    <h3>Ready for Diagnostics</h3>
+                    <p>Modify the patient parameters in the left panel and click "Predict Risk Profile" to run inference on the trained Machine Learning engine.</p>
+                    <div class="ecg-wave">
+                        <svg viewBox="0 0 300 60" class="ecg-svg">
+                            <path d="M 0 30 L 70 30 L 80 15 L 90 45 L 100 30 L 110 30 L 115 5 L 125 55 L 135 30 L 145 30 L 150 20 L 155 35 L 160 30 L 300 30" fill="none" stroke="rgba(255, 255, 255, 0.15)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                            <path d="M 0 30 L 70 30 L 80 15 L 90 45 L 100 30 L 110 30 L 115 5 L 125 55 L 135 30 L 145 30 L 150 20 L 155 35 L 160 30 L 300 30" fill="none" stroke="var(--primary-glow)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="ecg-line" />
+                        </svg>
+                    </div>
+                </div>
+
+                <!-- Result State: Risk details (Initially hidden) -->
+                <div class="results-content hidden" id="results-container">
+                    
+                    <!-- Risk Label Card -->
+                    <div class="risk-badge-wrapper">
+                        <div class="risk-badge" id="risk-badge">
+                            <span id="risk-label-text">LOW RISK</span>
+                        </div>
+                    </div>
+
+                    <!-- Gauge and Percentage -->
+                    <div class="gauge-container">
+                        <div class="gauge-ring">
+                            <svg class="gauge-svg" viewBox="0 0 120 120">
+                                <circle class="gauge-base" cx="60" cy="60" r="50"></circle>
+                                <circle class="gauge-fill" id="gauge-fill" cx="60" cy="60" r="50"></circle>
+                            </svg>
+                            <div class="gauge-center">
+                                <span class="gauge-pct" id="gauge-pct">0%</span>
+                                <span class="gauge-label">Probability</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Details and Recommendations -->
+                    <div class="report-details">
+                        <div class="detail-card">
+                            <div class="detail-header">
+                                <i class="fa-solid fa-stethoscope"></i> Clinical Insights
+                            </div>
+                            <p class="detail-text" id="risk-analysis-text">
+                                The machine learning classifier reports a minimal risk probability of cardiovascular disease based on the combination of age, resting blood pressure, and low severity chest pain indicators.
+                            </p>
+                        </div>
+
+                        <!-- Param Summary Table -->
+                        <div class="summary-box">
+                            <div class="summary-title"><i class="fa-solid fa-wave-square"></i> Patient Key Metrics</div>
+                            <div class="metrics-grid">
+                                <div class="metric-item">
+                                    <span class="m-lbl">Blood Pressure</span>
+                                    <span class="m-val" id="metric-bp">120 mmHg</span>
+                                </div>
+                                <div class="metric-item">
+                                    <span class="m-lbl">Cholesterol</span>
+                                    <span class="m-val" id="metric-chol">220 mg/dl</span>
+                                </div>
+                                <div class="metric-item">
+                                    <span class="m-lbl">Max Heart Rate</span>
+                                    <span class="m-val" id="metric-hr">150 bpm</span>
+                                </div>
+                                <div class="metric-item">
+                                    <span class="m-lbl">Exercise Angina</span>
+                                    <span class="m-val" id="metric-angina">No</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="recs-box">
+                            <div class="recs-title"><i class="fa-solid fa-shield-heart"></i> Suggested Interventions</div>
+                            <ul class="recs-list" id="recs-list">
+                                <li>Maintain a balanced Mediterranean diet low in sodium.</li>
+                                <li>Aim for 150 minutes of moderate cardiovascular activity weekly.</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                </div>
+
+            </section>
+        </main>
+        
+        <!-- Footer -->
+        <footer class="app-footer">
+            <p>Disclaimer: This system is a predictive tool based on a simulated machine learning model for educational purposes and should not be used as a replacement for professional clinical advice.</p>
+            <p class="tech-stack-info"><i class="fa-solid fa-microchip"></i> Powered by Flask • Scikit-Learn Logistic Regression • Standard Scaler</p>
+        </footer>
+    </div>
+
+    <!-- Custom JavaScript -->
+    <script src="{{ url_for('static', filename='main.js') }}"></script>
+</body>
+</html>
